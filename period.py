@@ -6,16 +6,16 @@ from itertools import cycle
 
 class Periods:
 
-  def __init__(self, delta=0.01, nb_period = 30000, oscillators=[], synapsor=gen_synapses, synapsor_mode="normal", trigger=gen_trigger):
+  def __init__(self, oscillators, synapses, trigger_times, delta=0.01, nb_period = 30000, synapse_trigger = 100, synapse_disable=200):
     self.nb = nb_period
     self.periods = nb_period
     self.delta = delta
     self.t = 0.0
     self.oscillators= oscillators
-    self.synapses = synapsor(len(self.oscillators), mode=synapsor_mode)
-    self.trigger = trigger(len(self.oscillators))
-    self.synapsesTRIGGER = 100
-    self.synapsesDISABLER = 200
+    self.synapses = synapses
+    self.trigger = trigger_times
+    self.synapsesTRIGGER = synapse_trigger
+    self.synapsesDISABLER = synapse_disable
     self.plot_colors = cycle([
       "#00FF00",
       "#5B60A2",
@@ -36,25 +36,24 @@ class Periods:
       self.next_period()
     return self
 
-  def plot(self, mode="normal"):
-    if mode == "normal":
+  def plot(self, mode="joined"):
+    if mode == "joined":
       return self._plot()
-    if mode == "sub" or "subplot":
+    if mode == "sub_and_joined" or "subplot":
       return self.subplot()
     return self._plot()
 
   def _plotylims(self):
-    minval = -5
-    maxval = 5
-    # for osc in self.oscillators:
-    #   for V in osc.Vs:
-    #     if V > maxval:
-    #       maxval = V
-    #     if V < minval:
-    #       minval = V
+    minval, maxval = 0,0
+    for osc in self.oscillators:
+      for V in osc.Vs:
+        if V > maxval:
+          maxval = V
+        if V < minval:
+          minval = V
 
 
-    return (minval,maxval)
+    return (1.3*minval,1.3*maxval)
 
   def _plot(self):
     mpl.rcParams['toolbar'] = 'None'

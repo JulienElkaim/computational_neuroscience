@@ -16,7 +16,7 @@ def gen_oscillators(nb, mode ="sigmaS"):
   if mode =="sigmaS":
     return [
       Oscillator(
-        sigmaS=rdmint(200,400,1)/100,
+        sigmaS=rdmint(200,500,1)/100,
         sigmaF=1.5,
         Af=0.5,
         toM=0.35,
@@ -37,7 +37,7 @@ def gen_oscillators(nb, mode ="sigmaS"):
       for n in range(nb)
     ]
 
-  elif mode=="to":
+  elif mode=="tau":
 
     return [
       Oscillator(
@@ -49,7 +49,7 @@ def gen_oscillators(nb, mode ="sigmaS"):
       )
       for n in range(nb)
     ]
-  elif mode=="toK":
+  elif mode=="tauK":
 
     return [
       Oscillator(
